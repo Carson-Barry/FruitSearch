@@ -18,21 +18,42 @@ function search(str) {
 	// Finally get results with matches anywhere within the string (if not already in first or second)
 	const third = fruit.filter(val => (val.toLowerCase().includes(str.toLowerCase()) && !first.includes(val) && !second.includes(val)));
 
-	return [...first, ...second, ...third];
+	if (str) {
+		return [...first, ...second, ...third];
+	}
+	return []
 }
 
 function searchHandler(e) {
-	console.log(search(e.target.value));
-
+	showSuggestions(search(e.target.value));
 }
 
-function showSuggestions(results, inputVal) {
+function showSuggestions(results) {
+	const resultList = document.querySelector("ul");
 
-	// TODO
+	// Show maximum of 5 results to limit clutter
+	const showResults = 5;
+	
+	// Delete all results shown previously, if any
+	while (resultList.firstChild) {
+		resultList.removeChild(resultList.firstChild);
+	}
+
+	for (let i = 0; i < showResults; i++) {
+		if (results[i]) {
+			const newLi = document.createElement("li");
+			newLi.innerText = results[i];
+			resultList.appendChild(newLi);
+		}
+	}
 }
 
 function useSuggestion(e) {
-	// TODO
+
+	// Delete shown suggestions
+	showSuggestions([])
+
+	document.querySelector("input").value = e.target.innerText
 }
 
 input.addEventListener('keyup', searchHandler);
