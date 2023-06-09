@@ -30,6 +30,9 @@ function searchHandler(e) {
 
 function showSuggestions(results) {
 	const resultList = document.querySelector("ul");
+	let searchValue = document.querySelector('#fruit').value
+
+	let compensateForList = 53;
 
 	// Show maximum of 5 results to limit clutter
 	const showResults = 5;
@@ -42,10 +45,28 @@ function showSuggestions(results) {
 	for (let i = 0; i < showResults; i++) {
 		if (results[i]) {
 			const newLi = document.createElement("li");
-			newLi.innerText = results[i];
+
+			// Bold the section of the string the user searched
+			let resultSearchBolded = "";
+			let indexPosition = results[i].toLowerCase().indexOf(searchValue.toLowerCase());
+			let stringArr = results[i].split("");
+			for (let j = 0; j<results[i].length; j++) {
+				if (j===indexPosition) {
+					resultSearchBolded += "<b>"
+				}
+				else if (j===indexPosition+searchValue.length) {
+					resultSearchBolded += "</b>"
+				}
+				resultSearchBolded += stringArr[j]
+			}
+			
+
+			newLi.innerHTML = resultSearchBolded;
 			resultList.appendChild(newLi);
+			compensateForList += 35;
 		}
 	}
+	document.querySelector('.suggestions ul').style.marginTop = compensateForList + "px"
 }
 
 function useSuggestion(e) {
